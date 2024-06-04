@@ -1,5 +1,6 @@
 # Netflix Clone
-Live Link :- https://netflix-clone-omega-gules-50.vercel.app/login
+Live Link :- netflix-clone-omega-gules-50.vercel.app
+
 
 This is a Netflix Clone built with React.js, Redux Toolkit, React-Redux, React Router DOM, Firebase for authentication, and Axios for API requests.
 
