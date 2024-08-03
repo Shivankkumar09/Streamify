@@ -1,5 +1,5 @@
 # Streamify
-
+Live Link :- https://netflix-clone-omega-gules-50.vercel.app
 This is a movie streaming web app built with React.js, Redux Toolkit, React-Redux, React Router DOM, Firebase for authentication, and Axios for API requests.
 
 ## Table of Contents
@@ -31,11 +31,11 @@ This is a movie streaming web app built with React.js, Redux Toolkit, React-Redu
 
 1. Clone the repository
     ```sh
-    git clone https://github.com/yourusername/netflix-clone.git
+    git clone https://github.com/yourusername/streamify.git
     ```
 2. Navigate to the project directory
     ```sh
-    cd netflix-clone
+    cd streamify
     ```
 3. Install dependencies
     ```sh
