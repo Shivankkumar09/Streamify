@@ -20,7 +20,7 @@ export default function Navbar({ isScrolled }) {
       <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
         <div className="left flex a-center">
           <div className="brand flex a-center j-center">
-            <img src={logo} alt="Logo" />
+          <h1>STREAMIFY</h1>
           </div>
           <ul className="links flex">
             {links.map(({ name, link }) => {
@@ -83,9 +83,13 @@ const Container = styled.div`
     .left {
       gap: 2rem;
       .brand {
-        img {
-          height: 4rem;
-        }
+        h1{
+     font-size: 3.5rem;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #e50914;
+    text-align: center;}
       }
       .links {
         list-style-type: none;

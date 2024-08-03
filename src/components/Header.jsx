@@ -1,14 +1,14 @@
 
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../assets/logo.png";
+
 
 export default function Header(props) {
   const navigate = useNavigate();
   return (
-    <StyledHeader className="flex a-center j-between">
+    <StyledHeader className="flex a-center j-between  ">
       <div className="logo">
-        <img src={logo} alt="logo" />
+       <h1>STREAMIFY</h1>
       </div>
       <button onClick={() => navigate(props.login ? "/login" : "/signup")}>
         {props.login ? "Log In" : "Sign In"}
@@ -17,11 +17,15 @@ export default function Header(props) {
   );
 }
 const StyledHeader = styled.header`
-  padding: 0 4rem;
+  padding: 0 4rem;  
   .logo {
-    img {
-      height: 5rem;
-    }
+    h1{
+     font-size: 4rem;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #e50914;
+    text-align: center;}
   }
   button {
     padding: 0.5rem 1rem;
