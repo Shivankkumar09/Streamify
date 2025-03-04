@@ -12,6 +12,7 @@ import { firebaseAuth } from "../utils/firebase-config";
 import { useDispatch } from "react-redux";
 import { removeMovieFromLiked } from "../store";
 import video from "../assets/video.mp4";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 export default React.memo(function Card({ index, movieData, isLiked = false }) {
   const navigate = useNavigate();
@@ -93,6 +94,13 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                   <AiOutlinePlus title="Add to my list" onClick={addToList} />
                 )}
               </div>
+              {/* Details Button to navigate to the Movie Details page */}
+               <button
+                    className="details-button"
+                    onClick={() => navigate(`/movie/${movieData.id}`)}
+                >
+                  <IoMdInformationCircleOutline />
+                </button>
               <div className="info">
                 <BiChevronDown title="More Info" />
               </div>
@@ -186,4 +194,16 @@ const Container = styled.div`
       }
     }
   }
+
+  .details-button{
+  background-color:transparent;
+  color:white;
+  font-size:1.5rem;
+  cursor:pointer
+  border:none;
+  &:hover {
+          color: #b8b8b8;
+        }
+          border:none;
+}
 `;
