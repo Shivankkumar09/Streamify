@@ -5,18 +5,20 @@ import {
   } from "@reduxjs/toolkit";
   import axios from "axios";
   import { API_KEY, TMDB_BASE_URL } from "../utils/constants";
+
   
   const initialState = {
     movies: [],
     genresLoaded: false,
     genres: [],
+    searchResults: [],
   };
   
   export const getGenres = createAsyncThunk("netflix/genres", async () => {
     const {
       data: { genres },
     } = await axios.get(
-      "https://api.themoviedb.org/3/genre/movie/list?api_key=3d39d6bfe362592e6aa293f01fbcf9b9"
+      `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
     );
     return genres;
   });
@@ -56,7 +58,7 @@ import {
         netflix: { genres },
       } = thunkAPI.getState();
       return getRawData(
-        `https://api.themoviedb.org/3/discover/${type}?api_key=3d39d6bfe362592e6aa293f01fbcf9b9&with_genres=${genre}`,
+        `https://api.themoviedb.org/3/discover/${type}?api_key=${API_KEY}&with_genres=${genre}`,
         genres
       );
     }
@@ -73,6 +75,17 @@ import {
         genres,
         true
       );
+    }
+  );
+
+  export const fetchSearchResults = createAsyncThunk(
+    "netflix/search",
+    async (searchTerm) => {
+      if (!searchTerm) return []; // Return empty if no input
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${searchTerm}`
+      );
+      return data.results.slice(0, 5); // Return top 5 search results
     }
   );
   
@@ -118,6 +131,10 @@ import {
       });
       builder.addCase(removeMovieFromLiked.fulfilled, (state, action) => {
         state.movies = action.payload;
+      });
+
+      builder.addCase(fetchSearchResults.fulfilled, (state, action) => {
+        state.searchResults = action.payload;
       });
     },
   });
