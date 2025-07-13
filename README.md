@@ -1,5 +1,5 @@
 # Streamify
-Live Link :- https://netflix-clone-omega-gules-50.vercel.app
+Live Link :- https://streamify-shivanks-projects-43c26258.vercel.app/login
 
 
 This is a movie streaming web app built with React.js, Redux Toolkit, React-Redux, React Router DOM, Firebase for authentication, and Axios for API requests.
