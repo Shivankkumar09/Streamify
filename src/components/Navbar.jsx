@@ -31,7 +31,7 @@ export default function Navbar({ isScrolled }) {
     } else {
       dispatch(fetchSearchResults(""));
     }
-  }, 400); // 400ms debounce delay
+  }, 400); 
 
   return () => clearTimeout(delayDebounce);
 }, [searchTerm, dispatch]);
