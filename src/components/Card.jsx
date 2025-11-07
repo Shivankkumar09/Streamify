@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { IoPlayCircleSharp } from "react-icons/io5";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiThumbUpFill, RiThumbDownFill } from "react-icons/ri";
 import { BiChevronDown } from "react-icons/bi";
 import { BsCheck } from "react-icons/bs";
-import axios from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
-import { useDispatch } from "react-redux";
-import { removeMovieFromLiked } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { addMovieToLiked, removeMovieFromLiked, getUsersLikedMovies } from "../store";
 import video from "../assets/video.mp4";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
@@ -19,26 +18,59 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [email, setEmail] = useState(undefined);
+  const [isInMyList, setIsInMyList] = useState(isLiked);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const likedMovies = useSelector((state) => state.netflix.likedMovies);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
       if (currentUser) {
         setEmail(currentUser.email);
-      } else {
-        navigate("/login");
+        // Fetch liked movies when user logs in
+        dispatch(getUsersLikedMovies(currentUser.email));
       }
     });
     return () => unsubscribe();
-  }, [navigate]);
+  }, [dispatch]);
+
+  // Check if this movie is in the liked list
+  useEffect(() => {
+    if (likedMovies && movieData) {
+      const isMovieLiked = likedMovies.some((movie) => movie.id === movieData.id);
+      setIsInMyList(isMovieLiked);
+    }
+  }, [likedMovies, movieData]);
 
   const addToList = async () => {
+    if (!email) {
+      navigate("/login");
+      return;
+    }
+    
+    setIsLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/user/add", {
-        email,
-        data: movieData,
-      });
+      await dispatch(addMovieToLiked({ email, movieData }));
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  const removeFromList = async () => {
+    if (!email) {
+      navigate("/login");
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      await dispatch(removeMovieFromLiked({ movieId: movieData.id, email }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,14 +113,13 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                 />
                 <RiThumbUpFill title="Like" />
                 <RiThumbDownFill title="Dislike" />
-                {isLiked ? (
+                {isLoading ? (
+                  <LoadingSpinner />
+                ) : isInMyList ? (
                   <BsCheck
                     title="Remove from List"
-                    onClick={() =>
-                      dispatch(
-                        removeMovieFromLiked({ movieId: movieData.id, email })
-                      )
-                    }
+                    onClick={removeFromList}
+                    className="in-list-icon"
                   />
                 ) : (
                   <AiOutlinePlus title="Add to my list" onClick={addToList} />
@@ -118,6 +149,24 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
     </Container>
   );
 });
+
+const spinAnimation = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const LoadingSpinner = styled.div`
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(229, 9, 20, 0.2);
+  border-top: 3px solid #e50914;
+  border-radius: 50%;
+  animation: ${spinAnimation} 0.8s linear infinite;
+`;
 
 const Container = styled.div`
   max-width: 230px;
@@ -179,6 +228,18 @@ const Container = styled.div`
         transition: 0.3s ease-in-out;
         &:hover {
           color: #b8b8b8;
+        }
+        
+        &.in-list-icon {
+          color: #46d369;
+          border: 2px solid #46d369;
+          border-radius: 50%;
+          padding: 0.2rem;
+          
+          &:hover {
+            color: #5ae57f;
+            border-color: #5ae57f;
+          }
         }
       }
     }
