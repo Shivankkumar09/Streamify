@@ -23,6 +23,7 @@ export default function App() {
         <Route exact path="/" element={<Netflix />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
 
+
       </Routes>
     </BrowserRouter>
   );
