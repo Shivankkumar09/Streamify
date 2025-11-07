@@ -46,14 +46,17 @@ function TVShows() {
     <Container>
       <Navbar isScrolled={isScrolled} />
       <div className="data">
-        <SelectGenre genres={genres} type="tv" />
+        <div className="header-row">
+          <PageDescription>Discover the best TV series and shows</PageDescription>
+          <SelectGenre genres={genres} type="tv" />
+        </div>
         {movies.length ? (
           <>
             <Slider movies={movies} />
           </>
         ) : (
           <h1 className="not-available">
-            No TV Shows avaialble for the selected genre. Please select a
+            No TV Shows available for the selected genre. Please select a
             different genre.
           </h1>
         )}
@@ -65,10 +68,48 @@ function TVShows() {
 const Container = styled.div`
   .data {
     margin-top: 8rem;
+    
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4rem;
+      margin-bottom: 2rem;
+      gap: 2rem;
+      
+      @media (max-width: 968px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      
+      @media (max-width: 768px) {
+        padding: 0 2rem;
+      }
+    }
+    
     .not-available {
       text-align: center;
       margin-top: 4rem;
+      color: #b3b3b3;
+      font-size: 1.5rem;
     }
   }
 `;
+
+const PageDescription = styled.h2`
+  font-size: 1.8rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin: 0;
+  
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
+`;
+
 export default TVShows;

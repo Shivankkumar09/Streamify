@@ -11,10 +11,18 @@ export default function BackgroundImage() {
 }
 
 const Container = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+  z-index: -1;
+  
   img {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 `;

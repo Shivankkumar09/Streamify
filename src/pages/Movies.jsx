@@ -48,7 +48,10 @@ function MoviePage() {
         <Navbar isScrolled={isScrolled} />
       </div>
       <div className="data">
-        <SelectGenre genres={genres} type="movie" />
+        <div className="header-row">
+          <PageDescription>Explore thousands of movies across all genres</PageDescription>
+          <SelectGenre genres={genres} type="movie" />
+        </div>
         {movies.length ? <Slider movies={movies} /> : <NotAvailable />}
       </div>
     </Container>
@@ -58,6 +61,26 @@ function MoviePage() {
 const Container = styled.div`
   .data {
     margin-top: 8rem;
+    
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4rem;
+      margin-bottom: 2rem;
+      gap: 2rem;
+      
+      @media (max-width: 968px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      
+      @media (max-width: 768px) {
+        padding: 0 2rem;
+      }
+    }
+    
     .not-available {
       text-align: center;
       color: white;
@@ -65,4 +88,20 @@ const Container = styled.div`
     }
   }
 `;
+
+const PageDescription = styled.h2`
+  font-size: 1.8rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin: 0;
+  
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
+`;
+
 export default MoviePage;
